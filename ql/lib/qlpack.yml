@@ -1,7 +1,7 @@
-name: codeql/language-all
+name: codeql/kaleidoscope-all
 version: 0.0.1-dev
-groups: language
-extractor: language
-dbscheme: language.dbscheme
+groups: kaleidoscope
+extractor: kaleidoscope
+dbscheme: kaleidoscope.dbscheme
 upgrades: upgrades
 library: true

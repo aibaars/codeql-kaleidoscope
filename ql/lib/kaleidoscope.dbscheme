@@ -1,0 +1,219 @@
+// CodeQL database schema for Kaleidoscope
+// Automatically generated from the tree-sitter grammar; do not edit
+
+@location = @location_default
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int start_line: int ref,
+  int start_column: int ref,
+  int end_line: int ref,
+  int end_column: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+sourceLocationPrefix(
+  string prefix: string ref
+);
+
+diagnostics(
+  unique int id: @diagnostic,
+  int severity: int ref,
+  string error_tag: string ref,
+  string error_message: string ref,
+  string full_error_message: string ref,
+  int location: @location_default ref
+);
+
+case @diagnostic.severity of
+  10 = @diagnostic_debug
+| 20 = @diagnostic_info
+| 30 = @diagnostic_warning
+| 40 = @diagnostic_error
+;
+
+
+@kaleidoscope_underscore_expression = @kaleidoscope_binary_op_expression | @kaleidoscope_underscore_primary_expression
+
+@kaleidoscope_underscore_primary_expression = @kaleidoscope_conditional_expression | @kaleidoscope_for_expression | @kaleidoscope_function_call_expression | @kaleidoscope_paren_expression | @kaleidoscope_token_number | @kaleidoscope_unary_op_expression | @kaleidoscope_var_in_expression | @kaleidoscope_variable_expression
+
+@kaleidoscope_underscore_prototype = @kaleidoscope_binary_prototype | @kaleidoscope_function_prototype | @kaleidoscope_unary_prototype
+
+@kaleidoscope_underscore_repl = @kaleidoscope_external_declaration | @kaleidoscope_function_definition | @kaleidoscope_underscore_expression
+
+kaleidoscope_binary_op_expression_def(
+  unique int id: @kaleidoscope_binary_op_expression,
+  int lhs: @kaleidoscope_underscore_expression ref,
+  int operator: @kaleidoscope_token_identifier ref,
+  int rhs: @kaleidoscope_underscore_expression ref
+);
+
+#keyset[kaleidoscope_binary_prototype, index]
+kaleidoscope_binary_prototype_argument(
+  int kaleidoscope_binary_prototype: @kaleidoscope_binary_prototype ref,
+  int index: int ref,
+  unique int argument: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_binary_prototype_precedence(
+  unique int kaleidoscope_binary_prototype: @kaleidoscope_binary_prototype ref,
+  unique int precedence: @kaleidoscope_token_number ref
+);
+
+kaleidoscope_binary_prototype_def(
+  unique int id: @kaleidoscope_binary_prototype,
+  int name: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_conditional_expression_def(
+  unique int id: @kaleidoscope_conditional_expression,
+  int condition: @kaleidoscope_underscore_expression ref,
+  int else: @kaleidoscope_underscore_expression ref,
+  int then: @kaleidoscope_underscore_expression ref
+);
+
+kaleidoscope_external_declaration_def(
+  unique int id: @kaleidoscope_external_declaration,
+  int prototype: @kaleidoscope_underscore_prototype ref
+);
+
+kaleidoscope_for_expression_update(
+  unique int kaleidoscope_for_expression: @kaleidoscope_for_expression ref,
+  unique int update: @kaleidoscope_underscore_expression ref
+);
+
+kaleidoscope_for_expression_def(
+  unique int id: @kaleidoscope_for_expression,
+  int body: @kaleidoscope_underscore_expression ref,
+  int condition: @kaleidoscope_underscore_expression ref,
+  int initializer: @kaleidoscope_initializer ref
+);
+
+#keyset[kaleidoscope_function_call_expression, index]
+kaleidoscope_function_call_expression_argument(
+  int kaleidoscope_function_call_expression: @kaleidoscope_function_call_expression ref,
+  int index: int ref,
+  unique int argument: @kaleidoscope_underscore_expression ref
+);
+
+kaleidoscope_function_call_expression_def(
+  unique int id: @kaleidoscope_function_call_expression,
+  int callee: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_function_definition_def(
+  unique int id: @kaleidoscope_function_definition,
+  int body: @kaleidoscope_underscore_expression ref,
+  int prototype: @kaleidoscope_underscore_prototype ref
+);
+
+#keyset[kaleidoscope_function_prototype, index]
+kaleidoscope_function_prototype_argument(
+  int kaleidoscope_function_prototype: @kaleidoscope_function_prototype ref,
+  int index: int ref,
+  unique int argument: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_function_prototype_def(
+  unique int id: @kaleidoscope_function_prototype,
+  int name: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_initializer_expr(
+  unique int kaleidoscope_initializer: @kaleidoscope_initializer ref,
+  unique int expr: @kaleidoscope_underscore_expression ref
+);
+
+kaleidoscope_initializer_def(
+  unique int id: @kaleidoscope_initializer,
+  int variable: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_paren_expression_def(
+  unique int id: @kaleidoscope_paren_expression,
+  int expr: @kaleidoscope_underscore_expression ref
+);
+
+#keyset[kaleidoscope_program, index]
+kaleidoscope_program_statement(
+  int kaleidoscope_program: @kaleidoscope_program ref,
+  int index: int ref,
+  unique int statement: @kaleidoscope_underscore_repl ref
+);
+
+kaleidoscope_program_def(
+  unique int id: @kaleidoscope_program
+);
+
+kaleidoscope_unary_op_expression_def(
+  unique int id: @kaleidoscope_unary_op_expression,
+  int operand: @kaleidoscope_underscore_expression ref,
+  int operator: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_unary_prototype_def(
+  unique int id: @kaleidoscope_unary_prototype,
+  int argument: @kaleidoscope_token_identifier ref,
+  int name: @kaleidoscope_token_identifier ref
+);
+
+#keyset[kaleidoscope_var_in_expression, index]
+kaleidoscope_var_in_expression_initializer(
+  int kaleidoscope_var_in_expression: @kaleidoscope_var_in_expression ref,
+  int index: int ref,
+  unique int initializer: @kaleidoscope_initializer ref
+);
+
+kaleidoscope_var_in_expression_def(
+  unique int id: @kaleidoscope_var_in_expression,
+  int expr: @kaleidoscope_underscore_expression ref
+);
+
+kaleidoscope_variable_expression_def(
+  unique int id: @kaleidoscope_variable_expression,
+  int name: @kaleidoscope_token_identifier ref
+);
+
+kaleidoscope_tokeninfo(
+  unique int id: @kaleidoscope_token,
+  int kind: int ref,
+  string value: string ref
+);
+
+case @kaleidoscope_token.kind of
+  0 = @kaleidoscope_reserved_word
+| 1 = @kaleidoscope_token_identifier
+| 2 = @kaleidoscope_token_line_comment
+| 3 = @kaleidoscope_token_number
+;
+
+
+@kaleidoscope_ast_node = @kaleidoscope_binary_op_expression | @kaleidoscope_binary_prototype | @kaleidoscope_conditional_expression | @kaleidoscope_external_declaration | @kaleidoscope_for_expression | @kaleidoscope_function_call_expression | @kaleidoscope_function_definition | @kaleidoscope_function_prototype | @kaleidoscope_initializer | @kaleidoscope_paren_expression | @kaleidoscope_program | @kaleidoscope_token | @kaleidoscope_unary_op_expression | @kaleidoscope_unary_prototype | @kaleidoscope_var_in_expression | @kaleidoscope_variable_expression
+
+@kaleidoscope_ast_node_parent = @file | @kaleidoscope_ast_node
+
+#keyset[parent, parent_index]
+kaleidoscope_ast_node_info(
+  unique int node: @kaleidoscope_ast_node ref,
+  int parent: @kaleidoscope_ast_node_parent ref,
+  int parent_index: int ref,
+  int loc: @location ref
+);
+

@@ -2,9 +2,9 @@
 
 type NUL && "%CODEQL_DIST%\codeql.exe" database index-files ^
     --prune=**/*.testproj ^
-    --include-extension=.lang ^
+    --include-extension=.kd ^
     --size-limit=5m ^
-    --language=language ^
+    --language=kaleidoscope ^
     --working-dir=. ^
     "%CODEQL_EXTRACTOR_QL_WIP_DATABASE%"
 

@@ -561,8 +561,8 @@ fn main() -> std::io::Result<()> {
     let ql_library_path = PathBuf::from(ql_library_path);
 
     let languages = vec![Language {
-        name: "Language".to_owned(),
-        node_types: tree_sitter_language::NODE_TYPES,
+        name: "Kaleidoscope".to_owned(),
+        node_types: tree_sitter_kaleidoscope::NODE_TYPES,
     }];
 
     let dbscheme_file = File::create(dbscheme_path).map_err(|e| {

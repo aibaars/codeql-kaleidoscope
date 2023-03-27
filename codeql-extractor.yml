@@ -1,15 +1,15 @@
-name: "language"
-display_name: "Language"
+name: "kaleidoscope"
+display_name: "Kaleidoscope"
 version: 0.0.1
 column_kind: "utf8"
 legacy_qltest_extraction: true
 github_api_languages:
-  - Language
+  - Kaleidoscope
 scc_languages:
-  - Language
+  - Kaleidoscope
 # File types
 file_types:
-  - name: language
-    display_name: Language
+  - name: kaleidoscope
+    display_name: Kaleidoscope
     extensions:
-       - .lang
+       - .kd

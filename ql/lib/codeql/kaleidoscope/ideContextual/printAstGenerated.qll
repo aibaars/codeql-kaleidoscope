@@ -1,5 +1,5 @@
 /**
- * Provides queries to pretty-print an Language abstract syntax tree as a graph.
+ * Provides queries to pretty-print an Kaleidoscope abstract syntax tree as a graph.
  *
  * This representation is based on the TreeSitter auto-generated AST.
  *
@@ -8,7 +8,7 @@
  * to hold for only the AST nodes you wish to view.
  */
 
-import codeql.language.ast.internal.TreeSitter::Language
+import codeql.kaleidoscope.ast.internal.TreeSitter::Kaleidoscope
 private import codeql.Locations
 
 /**

@@ -15,7 +15,7 @@ fn main() -> std::io::Result<()> {
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    let diagnostics = diagnostics::DiagnosticLoggers::new("language");
+    let diagnostics = diagnostics::DiagnosticLoggers::new("kaleidoscope");
     let mut main_thread_logger = diagnostics.logger();
     let num_threads = match codeql_extractor::options::num_threads() {
         Ok(num) => num,
@@ -42,7 +42,7 @@ fn main() -> std::io::Result<()> {
         }
     );
 
-    let trap_compression = match trap::Compression::from_env("CODEQL_LANGUAGE_TRAP_COMPRESSION")
+    let trap_compression = match trap::Compression::from_env("CODEQL_KALEIDOSCOPE_TRAP_COMPRESSION")
     {
         Ok(x) => x,
         Err(e) => {
@@ -62,10 +62,10 @@ fn main() -> std::io::Result<()> {
         .build_global()
         .unwrap();
 
-    let matches = clap::App::new("Language extractor")
+    let matches = clap::App::new("Kaleidoscope extractor")
         .version("1.0")
         .author("GitHub")
-        .about("CodeQL Language extractor")
+        .about("CodeQL Kaleidoscope extractor")
         .args_from_usage(
             "--source-archive-dir=<DIR> 'Sets a custom source archive folder'
                     --output-dir=<DIR>         'Sets a custom trap folder'
@@ -85,9 +85,9 @@ fn main() -> std::io::Result<()> {
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
 
-    let language = tree_sitter_language::language();
+    let language = tree_sitter_kaleidoscope::language();
     let schema =
-        node_types::read_node_types_str("language", tree_sitter_language::NODE_TYPES)?;
+        node_types::read_node_types_str("kaleidoscope", tree_sitter_kaleidoscope::NODE_TYPES)?;
 
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
@@ -103,7 +103,7 @@ fn main() -> std::io::Result<()> {
 
             extractor::extract(
                 language,
-                "language",
+                "kaleidoscope",
                 &schema,
                 &mut diagnostics_writer,
                 &mut trap_writer,
