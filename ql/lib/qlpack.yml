@@ -1,0 +1,7 @@
+name: codeql/language-all
+version: 0.0.1-dev
+groups: language
+extractor: language
+dbscheme: language.dbscheme
+upgrades: upgrades
+library: true
