@@ -2,7 +2,7 @@ cd extractor
 cargo build --release
 cd ..
 
-extractor\target\release\generator --dbscheme ql/lib/kaleidoscope.dbscheme --library ql/lib/codeql/kaleidoscope/ast/internal/TreeSitter.qll
+extractor\target\release\kaleidoscope-extractor generate --dbscheme ql/lib/kaleidoscope.dbscheme --library ql/lib/codeql/kaleidoscope/ast/internal/TreeSitter.qll
 
 codeql query format -i ql\lib\codeql\kaleidoscope\ast\internal\TreeSitter.qll
 
@@ -12,5 +12,4 @@ cp codeql-extractor.yml, ql\lib\kaleidoscope.dbscheme, ql\lib\kaleidoscope.dbsch
 cp -Recurse tools extractor-pack
 cp -Recurse downgrades extractor-pack
 mkdir extractor-pack\tools\win64 | Out-Null
-cp extractor\target\release\extractor.exe extractor-pack\tools\win64\extractor.exe
-cp extractor\target\release\autobuilder.exe extractor-pack\tools\win64\autobuilder.exe
+cp extractor\target\release\kaleidoscope-extractor.exe extractor-pack\tools\win64\kaleidoscope-extractor.exe
