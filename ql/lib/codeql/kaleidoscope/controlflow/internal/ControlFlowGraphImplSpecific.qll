@@ -34,7 +34,10 @@ class BooleanCompletion extends Completion, TBooleanCompletion {
 
   override string toString() { result = "BooleanCompletion(" + value + ")" }
 
-  override predicate isValidForSpecific(ControlFlowElement e) { none() }
+  override predicate isValidForSpecific(ControlFlowElement e) {
+    e = any(ConditionalExpressionTree c).getCondition() or
+    e = any(ForExpression c).getCondition()
+  }
 
   override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
@@ -59,9 +62,19 @@ predicate completionIsSimple(Completion c) { c instanceof SimpleCompletion }
 
 predicate completionIsValidFor(Completion c, ControlFlowElement e) { c.isValidFor(e) }
 
-CfgScope getCfgScope(ControlFlowElement e) { none() }
+CfgScope getCfgScope(ControlFlowElement e) {
+  exists(AstNode p | p = e.getParent() |
+    result = p
+    or
+    not p instanceof CfgScope and result = getCfgScope(p)
+  )
+}
 
 abstract class CfgScope extends AstNode { }
+
+private class FunctionScope extends CfgScope, FunctionDefinition { }
+
+private class ProgramScope extends CfgScope, Program { }
 
 // Not using CFG splitting, so the following are just a dummy types.
 private newtype TUnit = Unit()
@@ -74,9 +87,15 @@ class Split extends TUnit {
 
 int maxSplits() { result = 0 }
 
-predicate scopeFirst(CfgScope scope, ControlFlowElement e) { none() }
+predicate scopeFirst(CfgScope scope, ControlFlowElement e) {
+  first(scope.(Program), e) or
+  first(scope.(FunctionDefinition).getBody(), e)
+}
 
-predicate scopeLast(CfgScope scope, ControlFlowElement e, Completion c) { none() }
+predicate scopeLast(CfgScope scope, ControlFlowElement e, Completion c) {
+  last(scope.(Program), e, c) or
+  last(scope.(FunctionDefinition).getBody(), e, c)
+}
 
 cached
 newtype TSuccessorType =
@@ -219,3 +238,102 @@ class ElementNode extends ControlFlowNode, TElementNode {
 }
 
 class ControlFlowNode = Node;
+
+private class ProgramTree extends StandardPreOrderTree, Program {
+  override ControlFlowTree getChildElement(int i) { result = this.getStatement(i) }
+}
+
+private class FunctionDefinitionTree extends FunctionDefinition, LeafTree { }
+
+private class FunctionCallExpressionTree extends StandardPostOrderTree, FunctionCallExpression {
+  override ControlFlowTree getChildElement(int i) { result = this.getArgument(i) }
+}
+
+private class BinaryOpExpressionTree extends StandardPostOrderTree, BinaryOpExpression {
+  override ControlFlowTree getChildElement(int i) {
+    result = this.getLhs() and i = 0
+    or
+    result = this.getRhs() and i = 1
+  }
+}
+
+private class ConditionalExpressionTree extends PostOrderTree, ConditionalExpression {
+  override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+  override predicate first(ControlFlowElement first) { first(this.getCondition(), first) }
+
+  override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    last(this.getCondition(), pred, c) and
+    (
+      first(this.getThen(), succ) and c.(BooleanCompletion).getValue() = true
+      or
+      first(this.getElse(), succ) and c.(BooleanCompletion).getValue() = false
+    )
+    or
+    last(this.getThen(), pred, c) and
+    succ = this and
+    c instanceof SimpleCompletion
+    or
+    last(this.getElse(), pred, c) and
+    succ = this and
+    c instanceof SimpleCompletion
+  }
+}
+
+private class ExternalDeclarationTree extends ExternalDeclaration, LeafTree { }
+
+private class ForExpressionTree extends PostOrderTree, ForExpression {
+  override predicate propagatesAbnormal(ControlFlowElement child) { none() }
+
+  override predicate first(ControlFlowElement first) { first(this.getInitializer(), first) }
+
+  override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
+    last(this.getInitializer(), pred, c) and
+    first(this.getCondition(), succ) and
+    c instanceof SimpleCompletion
+    or
+    last(this.getCondition(), pred, c) and
+    (
+      first(this.getBody(), succ) and c.(BooleanCompletion).getValue() = true
+      or
+      succ = this and c.(BooleanCompletion).getValue() = false
+    )
+    or
+    last(this.getBody(), pred, c) and
+    first(this.getUpdate(), succ) and
+    c instanceof SimpleCompletion
+    or
+    last(this.getUpdate(), pred, c) and
+    first(this.getCondition(), succ) and
+    c instanceof SimpleCompletion
+    or
+    not exists(this.getUpdate()) and
+    last(this.getBody(), pred, c) and
+    first(this.getCondition(), succ) and
+    c instanceof SimpleCompletion
+  }
+}
+
+private class InitializerTree extends StandardPostOrderTree, Initializer {
+  override ControlFlowTree getChildElement(int i) { result = this.getExpr() and i = 0 }
+}
+
+private class NumberTree extends Number, LeafTree { }
+
+private class ParenExpressionTree extends StandardPostOrderTree, ParenExpression {
+  override ControlFlowTree getChildElement(int i) { result = this.getExpr() and i = 0 }
+}
+
+private class UnaryOpExpressionTree extends StandardPostOrderTree, UnaryOpExpression {
+  override ControlFlowTree getChildElement(int i) { result = this.getOperand() and i = 0 }
+}
+
+private class VarInExpressionTree extends StandardPostOrderTree, VarInExpression {
+  override ControlFlowTree getChildElement(int i) {
+    result = this.getInitializer(i)
+    or
+    result = this.getExpr() and i = count(this.getInitializer(_))
+  }
+}
+
+private class VariableExpressionTree extends VariableExpression, LeafTree { }
