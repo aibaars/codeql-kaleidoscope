@@ -5,3 +5,4 @@ extractor: kaleidoscope
 dbscheme: kaleidoscope.dbscheme
 upgrades: upgrades
 library: true
+tests: test

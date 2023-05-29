@@ -1,0 +1,1 @@
+import codeql.kaleidoscope.controlflow.internal.ControlFlowGraphImplShared::Consistency
