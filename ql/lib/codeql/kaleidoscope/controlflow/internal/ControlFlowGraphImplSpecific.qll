@@ -1,6 +1,7 @@
 private import codeql.kaleidoscope.ast.internal.TreeSitter::Kaleidoscope
 private import ControlFlowGraphImplShared
 import codeql.Locations
+private import codeql.kaleidoscope.controlflow.BasicBlocks
 
 private newtype TCompletion =
   TSimpleCompletion() or
@@ -142,7 +143,9 @@ class Node extends TCfgNode {
 
   final predicate isCondition() { exists(this.getASuccessor(any(BooleanSuccessor bs))) }
 
-  final CfgScope getScope() { TEntryNode(result) = this.getAPredecessor*() }
+  final CfgScope getScope() { result = this.getBasicBlock().getScope() }
+
+  BasicBlock getBasicBlock() { result.getANode() = this }
 
   final ControlFlowNode getASuccessor(SuccessorType t) { result = getASuccessor(this, t) }
 
@@ -163,6 +166,8 @@ class EntryNode extends ControlFlowNode, TEntryNode {
 
   EntryNode() { this = TEntryNode(scope) }
 
+  final override EntryBasicBlock getBasicBlock() { result = ControlFlowNode.super.getBasicBlock() }
+
   final override Location getLocation() { result = scope.getLocation() }
 
   final override string toString() { result = "enter " + scope }
@@ -177,6 +182,10 @@ class AnnotatedExitNode extends ControlFlowNode, TAnnotatedExitNode {
 
   /** Holds if this node represent a normal exit. */
   final predicate isNormal() { normal = true }
+
+  final override AnnotatedExitBasicBlock getBasicBlock() {
+    result = ControlFlowNode.super.getBasicBlock()
+  }
 
   final override Location getLocation() { result = scope.getLocation() }
 
