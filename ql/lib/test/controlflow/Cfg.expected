@@ -1,0 +1,184 @@
+source.kd:
+#    1| Program
+#-----|  -> FunctionDefinition
+
+#    1| enter Program
+#-----|  -> Program
+
+#    1| exit Program
+
+#    1| exit Program (normal)
+#-----|  -> exit Program
+
+#    3| FunctionDefinition
+#-----|  -> FunctionDefinition
+
+#    3| enter FunctionDefinition
+#-----|  -> VariableExpression
+
+#    3| exit FunctionDefinition
+
+#    3| exit FunctionDefinition (normal)
+#-----|  -> exit FunctionDefinition
+
+#    3| VariableExpression
+#-----|  -> exit FunctionDefinition (normal)
+
+#    6| FunctionDefinition
+#-----|  -> FunctionDefinition
+
+#    6| enter FunctionDefinition
+#-----|  -> VariableExpression
+
+#    6| exit FunctionDefinition
+
+#    6| exit FunctionDefinition (normal)
+#-----|  -> exit FunctionDefinition
+
+#    7| ConditionalExpression
+#-----|  -> exit FunctionDefinition (normal)
+
+#    7| ParenExpression
+#-----| true -> 1
+#-----| false -> VariableExpression
+
+#    7| VariableExpression
+#-----|  -> 3
+
+#    7| BinaryOpExpression
+#-----|  -> ParenExpression
+
+#    7| 3
+#-----|  -> BinaryOpExpression
+
+#    8| 1
+#-----|  -> ConditionalExpression
+
+#   10| FunctionCallExpression
+#-----|  -> VariableExpression
+
+#   10| BinaryOpExpression
+#-----|  -> ConditionalExpression
+
+#   10| VariableExpression
+#-----|  -> 1
+
+#   10| BinaryOpExpression
+#-----|  -> FunctionCallExpression
+
+#   10| 1
+#-----|  -> BinaryOpExpression
+
+#   10| FunctionCallExpression
+#-----|  -> BinaryOpExpression
+
+#   10| VariableExpression
+#-----|  -> 2
+
+#   10| BinaryOpExpression
+#-----|  -> FunctionCallExpression
+
+#   10| 2
+#-----|  -> BinaryOpExpression
+
+#   13| FunctionDefinition
+#-----|  -> 10
+
+#   13| enter FunctionDefinition
+#-----|  -> 1
+
+#   13| exit FunctionDefinition
+
+#   13| exit FunctionDefinition (normal)
+#-----|  -> exit FunctionDefinition
+
+#   14| VarInExpression
+#-----|  -> exit FunctionDefinition (normal)
+
+#   14| Initializer
+#-----|  -> 1
+
+#   14| 1
+#-----|  -> Initializer
+
+#   14| Initializer
+#-----|  -> Initializer
+
+#   14| 1
+#-----|  -> Initializer
+
+#   14| Initializer
+#-----|  -> 3
+
+#   15| ParenExpression
+#-----|  -> VariableExpression
+
+#   15| BinaryOpExpression
+#-----|  -> VarInExpression
+
+#   15| ForExpression
+#-----|  -> ParenExpression
+
+#   15| Initializer
+#-----|  -> VariableExpression
+
+#   15| 3
+#-----|  -> Initializer
+
+#   15| VariableExpression
+#-----|  -> VariableExpression
+
+#   15| BinaryOpExpression
+#-----| false -> ForExpression
+#-----| true -> VariableExpression
+
+#   15| VariableExpression
+#-----|  -> BinaryOpExpression
+
+#   16| VariableExpression
+#-----|  -> VariableExpression
+
+#   16| BinaryOpExpression
+#-----|  -> VariableExpression
+
+#   16| BinaryOpExpression
+#-----|  -> VariableExpression
+
+#   16| BinaryOpExpression
+#-----|  -> VariableExpression
+
+#   16| VariableExpression
+#-----|  -> VariableExpression
+
+#   16| BinaryOpExpression
+#-----|  -> BinaryOpExpression
+
+#   16| VariableExpression
+#-----|  -> BinaryOpExpression
+
+#   17| VariableExpression
+#-----|  -> VariableExpression
+
+#   17| BinaryOpExpression
+#-----|  -> BinaryOpExpression
+
+#   17| VariableExpression
+#-----|  -> BinaryOpExpression
+
+#   18| VariableExpression
+#-----|  -> VariableExpression
+
+#   18| BinaryOpExpression
+#-----|  -> BinaryOpExpression
+
+#   18| VariableExpression
+#-----|  -> BinaryOpExpression
+
+#   19| VariableExpression
+#-----|  -> BinaryOpExpression
+
+#   22| FunctionCallExpression
+#-----|  -> exit Program (normal)
+
+#   22| 10
+#-----|  -> FunctionCallExpression
