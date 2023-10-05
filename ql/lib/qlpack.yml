@@ -8,4 +8,5 @@ library: true
 tests: test
 dependencies:
   "codeql/controlflow": "*"
+  "codeql/dataflow": "*"
   "codeql/ssa": "*"
