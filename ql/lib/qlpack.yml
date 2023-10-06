@@ -1,0 +1,7 @@
+name: codeql/kaleidoscope-all
+version: 0.0.1-dev
+groups: kaleidoscope
+extractor: kaleidoscope
+dbscheme: kaleidoscope.dbscheme
+upgrades: upgrades
+library: true
