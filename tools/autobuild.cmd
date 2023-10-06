@@ -1,5 +1,5 @@
 @echo off
 
-type NUL && "%CODEQL_EXTRACTOR_LANGUAGE_ROOT%\tools\win64\extractor.exe" autobuild
+type NUL && "%CODEQL_EXTRACTOR_KALEIDOSCOPE_ROOT%\tools\%CODEQL_PLATFORM%\kaleidoscope-extractor" autobuild
 
 exit /b %ERRORLEVEL%

@@ -28,15 +28,15 @@ pub fn run(options: Options) -> std::io::Result<()> {
         .init();
 
     let extractor = simple::Extractor {
-        prefix: "language".to_string(),
+        prefix: "kaleidoscope".to_string(),
         languages: vec![simple::LanguageSpec {
-            prefix: "language",
-            ts_language: tree_sitter_language::language(),
-            node_types: tree_sitter_language::NODE_TYPES,
-            file_extensions: vec!["lang".into()],
+            prefix: "kaleidoscope",
+            ts_language: tree_sitter_kaleidoscope::language(),
+            node_types: tree_sitter_kaleidoscope::NODE_TYPES,
+            file_extensions: vec!["kd".into()],
         }],
         trap_dir: options.output_dir,
-        trap_compression: trap::Compression::from_env("CODEQL_LANGUAGE_TRAP_COMPRESSION"),
+        trap_compression: trap::Compression::from_env("CODEQL_KALEIDOSCOPE_TRAP_COMPRESSION"),
         source_archive_dir: options.source_archive_dir,
         file_list: options.file_list,
     };

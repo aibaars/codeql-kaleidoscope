@@ -1,5 +1,5 @@
-# codeql-language
-CodeQL for Language.
+# codeql-kaleidoscope
+CodeQL for LLVM Kaleidoscope.
 
 ## Setup 
 
@@ -14,7 +14,7 @@ CodeQL for Language.
 
 ```bash
 gh codeql database create \
-    --language=language --overwrite \
+    --language=kaleidoscope --overwrite \
     --search-path $PWD/extractor-pack \
     --source-root ./testing/source \
     ./testing/database

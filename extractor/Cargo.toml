@@ -1,5 +1,5 @@
 [package]
-name = "language-extractor"
+name = "kaleidoscope-extractor"
 version = "0.1.0"
 authors = ["GitHub"]
 edition = "2018"
@@ -10,7 +10,7 @@ edition = "2018"
 flate2 = "1.0"
 codeql-extractor = { git = "https://github.com/github/codeql" }
 tree-sitter = ">= 0.20, < 0.21"
-tree-sitter-language = "1.0"
+tree-sitter-kaleidoscope = { git = "https://github.com/aibaars/tree-sitter-kaleidoscope" }
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }

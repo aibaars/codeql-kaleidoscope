@@ -9,8 +9,8 @@ pub struct Options {}
 
 pub fn run(_: Options) -> std::io::Result<()> {
     let dist = env::var("CODEQL_DIST").expect("CODEQL_DIST not set");
-    let db = env::var("CODEQL_EXTRACTOR_LANGUAGE_WIP_DATABASE")
-        .expect("CODEQL_EXTRACTOR_LANGUAGE_WIP_DATABASE not set");
+    let db = env::var("CODEQL_EXTRACTOR_KALEIDOSCOPE_WIP_DATABASE")
+        .expect("CODEQL_EXTRACTOR_KALEIDOSCOPE_WIP_DATABASE not set");
     let codeql = if env::consts::OS == "windows" {
         "codeql.exe"
     } else {
@@ -20,9 +20,9 @@ pub fn run(_: Options) -> std::io::Result<()> {
     let mut cmd = Command::new(codeql);
     cmd.arg("database")
         .arg("index-files")
-        .arg("--include-extension=.lang")
+        .arg("--include-extension=.kd")
         .arg("--size-limit=10m")
-        .arg("--language=language")
+        .arg("--language=kaleidoscope")
         .arg("--working-dir=.")
         .arg(db);
 
