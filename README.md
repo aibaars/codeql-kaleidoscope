@@ -4,7 +4,7 @@ CodeQL for LLVM Kaleidoscope.
 ## Setup 
 
 - Install Rust (rustup.rs)
-- Install CodeQL CLI (codeql.github.com/docs/codeql-cli/installing-codeql-cli/)
+- Install CodeQL CLI ([Setting up the CodeQL CLI](https://docs.github.com/en/code-security/codeql-cli/getting-started-with-the-codeql-cli/setting-up-the-codeql-cli))
 - Run `scripts/create-extractor-pack.sh`
   - [optional] Update `codeql` to `gh codeql`
 - Install lib packs
