@@ -7,18 +7,22 @@
  * @tags ide-contextual-queries/print-ast
  */
 
-import codeql.kaleidoscope.ideContextual.printAstGenerated
-import codeql.kaleidoscope.ideContextual.IDEContextual
+private import codeql.kaleidoscope.ideContextual.IDEContextual
+import codeql.kaleidoscope.ideContextual.printAst
+private import codeql.kaleidoscope.Ast
 
 /**
- * Gets the source file to generate an AST from.
+ * The source file to generate an AST from.
  */
 external string selectedSourceFile();
 
-// Overrides the configuration to print only nodes in the selected source file.
+/**
+ * A configuration that only prints nodes in the selected source file.
+ */
 class Cfg extends PrintAstConfiguration {
-  override predicate shouldPrintNode(AstNode n) {
+  override predicate shouldPrintNode(PrintAstNode n) {
     super.shouldPrintNode(n) and
+    n instanceof PrintRegularAstNode and
     n.getLocation().getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
 }
